@@ -1,4 +1,4 @@
-package com.gordonwong.materialsheetfab.animations;
+package com.ivaniskandar.materialsheetfab.animations;
 
 import java.lang.reflect.Method;
 
@@ -6,16 +6,16 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
-import android.os.Build;
 import android.view.View;
-import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
 import android.view.animation.Interpolator;
+import android.view.animation.ScaleAnimation;
 
-import com.gordonwong.materialsheetfab.MaterialSheetFab.RevealXDirection;
-import com.gordonwong.materialsheetfab.MaterialSheetFab.RevealYDirection;
-
-import io.codetail.animation.SupportAnimator;
+import com.ivaniskandar.materialsheetfab.MaterialSheetFab.RevealXDirection;
+import com.ivaniskandar.materialsheetfab.MaterialSheetFab.RevealYDirection;
 
 /**
  * Created by Gordon Wong on 7/5/2015.
@@ -25,7 +25,7 @@ import io.codetail.animation.SupportAnimator;
 public class MaterialSheetAnimation {
 
 	private static final String SUPPORT_CARDVIEW_CLASSNAME = "android.support.v7.widget.CardView";
-	private static final int SHEET_REVEAL_OFFSET_Y = 5;
+	private static final int SHEET_REVEAL_OFFSET_Y = 0;
 
 	private View sheet;
 	private int sheetColor;
@@ -138,8 +138,17 @@ public class MaterialSheetAnimation {
 	public void morphFromFab(View fab, long showSheetDuration, long showSheetColorDuration,
 			AnimationListener listener) {
 		sheet.setVisibility(View.VISIBLE);
-		revealSheetWithFab(fab, getFabRevealRadius(fab), getSheetRevealRadius(), showSheetDuration,
-				fabColor, sheetColor, showSheetColorDuration, listener);
+		if (listener != null) {
+			listener.onStart();
+		}
+
+		// Pass listener to the animation that will be the last to finish
+		AnimationListener revealListener = (showSheetDuration >= showSheetColorDuration) ? listener : null;
+		AnimationListener colorListener = (showSheetColorDuration > showSheetDuration) ? listener : null;
+
+		startExpandAnimation(sheet, showSheetDuration, interpolator, revealListener);
+		startColorAnim(sheet, fabColor, sheetColor, showSheetColorDuration, interpolator,
+				colorListener);
 	}
 
 	/**
@@ -154,86 +163,91 @@ public class MaterialSheetAnimation {
 	 */
 	public void morphIntoFab(View fab, long hideSheetDuration, long hideSheetColorDuration,
 			AnimationListener listener) {
-		revealSheetWithFab(fab, getSheetRevealRadius(), getFabRevealRadius(fab), hideSheetDuration,
-				sheetColor, fabColor, hideSheetColorDuration, listener);
-	}
-
-	protected void revealSheetWithFab(View fab, float startRadius, float endRadius,
-			long sheetDuration, int startColor, int endColor, long sheetColorDuration,
-			AnimationListener listener) {
 		if (listener != null) {
 			listener.onStart();
 		}
 
 		// Pass listener to the animation that will be the last to finish
-		AnimationListener revealListener = (sheetDuration >= sheetColorDuration) ? listener : null;
-		AnimationListener colorListener = (sheetColorDuration > sheetDuration) ? listener : null;
+		AnimationListener revealListener = (hideSheetDuration >= hideSheetColorDuration) ? listener : null;
+		AnimationListener colorListener = (hideSheetColorDuration > hideSheetDuration) ? listener : null;
 
-		// Start animations
-		startCircularRevealAnim(sheet, getSheetRevealCenterX(), getSheetRevealCenterY(fab),
-				startRadius, endRadius, sheetDuration, interpolator, revealListener);
-		startColorAnim(sheet, startColor, endColor, sheetColorDuration, interpolator,
-				colorListener);
+		startShrinkAnimation(sheet, hideSheetDuration, interpolator, revealListener);
+//		startColorAnim(sheet, fabColor, sheetColor, hideSheetColorDuration, interpolator,
+//				colorListener);
 	}
 
-	protected void startCircularRevealAnim(View view, int centerX, int centerY, float startRadius,
-			float endRadius, long duration, Interpolator interpolator,
-			final AnimationListener listener) {
-		// Use native circular reveal on Android 5.0+
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-			// Native circular reveal uses coordinates relative to the view
-			int relativeCenterX = (int) (centerX - view.getX());
-			int relativeCenterY = (int) (centerY - view.getY());
-			// Setup animation
-			Animator anim = ViewAnimationUtils.createCircularReveal(view, relativeCenterX,
-					relativeCenterY, startRadius, endRadius);
-			anim.setDuration(duration);
-			anim.setInterpolator(interpolator);
-			// Add listener
-			anim.addListener(new AnimatorListenerAdapter() {
-				@Override
-				public void onAnimationStart(Animator animation) {
-					if (listener != null) {
-						listener.onStart();
-					}
-				}
+	protected void startExpandAnimation(View view, long duration, Interpolator interpolator,
+										final AnimationListener listener) {
+		// Setup animation
+        Animation fadeIn = new AlphaAnimation(0, 1);
+		Animation scale = new ScaleAnimation(0f, 1f, 0f, 1f,
+                Animation.RELATIVE_TO_SELF, 1, Animation.RELATIVE_TO_SELF, 1);
+        AnimationSet animationSet = new AnimationSet(true);
+        animationSet.addAnimation(fadeIn);
+        animationSet.addAnimation(scale);
+        animationSet.setDuration(duration);
+        animationSet.setInterpolator(interpolator);
+        animationSet.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+                if (listener != null) {
+                    listener.onStart();
+                }
+            }
 
-				@Override
-				public void onAnimationEnd(Animator animation) {
-					if (listener != null) {
-						listener.onEnd();
-					}
-				}
-			});
-			// Start animation
-			anim.start();
-		} else {
-			// Circular reveal library uses absolute coordinates
-			// Setup animation
-			SupportAnimator anim = io.codetail.animation.ViewAnimationUtils
-					.createCircularReveal(view, centerX, centerY, startRadius, endRadius);
-			anim.setDuration((int) duration);
-			anim.setInterpolator(interpolator);
-			// Add listener
-			anim.addListener(new SupportAnimator.SimpleAnimatorListener() {
-				@Override
-				public void onAnimationStart() {
-					if (listener != null) {
-						listener.onStart();
-					}
-				}
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                if (listener != null) {
+                    listener.onEnd();
+                }
+            }
 
-				@Override
-				public void onAnimationEnd() {
-					if (listener != null) {
-						listener.onEnd();
-					}
-				}
-			});
-			// Start animation
-			anim.start();
-		}
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+
+        // Start animation
+		view.startAnimation(animationSet);
 	}
+
+	protected void startShrinkAnimation(View view, long duration, Interpolator interpolator,
+										final AnimationListener listener) {
+        // Setup animation
+        Animation fadeIn = new AlphaAnimation(1, 0);
+        Animation scale = new ScaleAnimation(1f, 0f, 1f, 0f,
+                Animation.RELATIVE_TO_SELF, 1, Animation.RELATIVE_TO_SELF, 1);
+        AnimationSet animationSet = new AnimationSet(true);
+        animationSet.addAnimation(fadeIn);
+        animationSet.addAnimation(scale);
+        animationSet.setDuration(duration);
+        animationSet.setInterpolator(interpolator);
+        animationSet.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+                if (listener != null) {
+                    listener.onStart();
+                }
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                if (listener != null) {
+                    listener.onEnd();
+                }
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+
+        // Start animation
+        view.startAnimation(animationSet);
+	}
+
 
 	protected void startColorAnim(final View view, final int startColor, final int endColor,
 			long duration, Interpolator interpolator, final AnimationListener listener) {
@@ -294,26 +308,6 @@ public class MaterialSheetAnimation {
 
 	public boolean isSheetVisible() {
 		return sheet.getVisibility() == View.VISIBLE;
-	}
-
-	/**
-	 * @return Sheet reveal's center X coordinate
-	 */
-	public int getSheetRevealCenterX() {
-		return (int) (sheet.getX() + (sheet.getWidth() / 2));
-	}
-
-	/**
-	 * @return Sheet reveal's center Y coordinate
-	 */
-	public int getSheetRevealCenterY(View fab) {
-		if (revealYDirection == RevealYDirection.UP) {
-			return (int) (sheet.getY()
-					+ (sheet.getHeight() * (SHEET_REVEAL_OFFSET_Y - 1) / SHEET_REVEAL_OFFSET_Y)
-					- (fab.getHeight() / 2));
-		}
-		return (int) (sheet.getY() + (sheet.getHeight() / SHEET_REVEAL_OFFSET_Y)
-				+ (fab.getHeight() / 2));
 	}
 
 	protected float getSheetRevealRadius() {

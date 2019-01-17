@@ -1,4 +1,4 @@
-package com.gordonwong.materialsheetfab.animations;
+package com.ivaniskandar.materialsheetfab.animations;
 
 /**
  * Created by Gordon Wong on 7/9/2015.

@@ -1,14 +1,14 @@
-package com.gordonwong.materialsheetfab.sample.adapters;
+package com.ivaniskandar.materialsheetfab.sample.adapters;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.gordonwong.materialsheetfab.sample.R;
-import com.gordonwong.materialsheetfab.sample.fragments.AllFragment;
-import com.gordonwong.materialsheetfab.sample.fragments.FavoritesFragment;
-import com.gordonwong.materialsheetfab.sample.fragments.SharedFragment;
+import com.ivaniskandar.materialsheetfab.sample.R;
+import com.ivaniskandar.materialsheetfab.sample.fragments.AllFragment;
+import com.ivaniskandar.materialsheetfab.sample.fragments.FavoritesFragment;
+import com.ivaniskandar.materialsheetfab.sample.fragments.SharedFragment;
 
 /**
  * Created by Gordon Wong on 7/17/2015.

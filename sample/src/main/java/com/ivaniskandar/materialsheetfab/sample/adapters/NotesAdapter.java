@@ -1,4 +1,4 @@
-package com.gordonwong.materialsheetfab.sample.adapters;
+package com.ivaniskandar.materialsheetfab.sample.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.CardView;
@@ -11,8 +11,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.gordonwong.materialsheetfab.sample.R;
-import com.gordonwong.materialsheetfab.sample.models.Note;
+import com.ivaniskandar.materialsheetfab.sample.R;
+import com.ivaniskandar.materialsheetfab.sample.models.Note;
 
 /**
  * Created by Gordon Wong on 7/18/2015.

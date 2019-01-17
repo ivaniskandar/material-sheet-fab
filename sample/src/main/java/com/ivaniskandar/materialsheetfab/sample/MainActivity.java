@@ -1,4 +1,4 @@
-package com.gordonwong.materialsheetfab.sample;
+package com.ivaniskandar.materialsheetfab.sample;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -15,9 +15,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.gordonwong.materialsheetfab.MaterialSheetFab;
-import com.gordonwong.materialsheetfab.MaterialSheetFabEventListener;
-import com.gordonwong.materialsheetfab.sample.adapters.MainPagerAdapter;
+import com.ivaniskandar.materialsheetfab.MaterialSheetFab;
+import com.ivaniskandar.materialsheetfab.MaterialSheetFabEventListener;
+import com.ivaniskandar.materialsheetfab.sample.adapters.MainPagerAdapter;
 
 /**
  * Created by Gordon Wong on 7/17/2015.

@@ -1,6 +1,6 @@
-package com.gordonwong.materialsheetfab.sample.fragments;
+package com.ivaniskandar.materialsheetfab.sample.fragments;
 
-import com.gordonwong.materialsheetfab.sample.R;
+import com.ivaniskandar.materialsheetfab.sample.R;
 
 /**
  * Created by Gordon Wong on 7/17/2015.

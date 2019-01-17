@@ -1,4 +1,4 @@
-package com.gordonwong.materialsheetfab.animations;
+package com.ivaniskandar.materialsheetfab.animations;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;

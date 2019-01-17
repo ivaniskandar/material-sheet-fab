@@ -1,4 +1,4 @@
-package com.gordonwong.materialsheetfab.sample;
+package com.ivaniskandar.materialsheetfab.sample;
 
 import android.content.Context;
 import android.support.design.widget.FloatingActionButton;
@@ -9,7 +9,7 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.Interpolator;
 import android.view.animation.ScaleAnimation;
 
-import com.gordonwong.materialsheetfab.AnimatedFab;
+import com.ivaniskandar.materialsheetfab.AnimatedFab;
 
 /**
  * Created by Gordon Wong on 7/17/2015.

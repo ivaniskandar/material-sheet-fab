@@ -1,6 +1,5 @@
-package com.gordonwong.materialsheetfab;
+package com.ivaniskandar.materialsheetfab;
 
-import android.os.Build;
 import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
@@ -8,12 +7,10 @@ import android.view.ViewTreeObserver;
 import android.view.animation.AnimationUtils;
 import android.view.animation.Interpolator;
 
-import com.gordonwong.materialsheetfab.animations.AnimationListener;
-import com.gordonwong.materialsheetfab.animations.FabAnimation;
-import com.gordonwong.materialsheetfab.animations.MaterialSheetAnimation;
-import com.gordonwong.materialsheetfab.animations.OverlayAnimation;
-
-import io.codetail.animation.arcanimator.Side;
+import com.ivaniskandar.materialsheetfab.animations.AnimationListener;
+import com.ivaniskandar.materialsheetfab.animations.FabAnimation;
+import com.ivaniskandar.materialsheetfab.animations.MaterialSheetAnimation;
+import com.ivaniskandar.materialsheetfab.animations.OverlayAnimation;
 
 /**
  * Created by Gordon Wong on 7/9/2015.
@@ -22,30 +19,20 @@ import io.codetail.animation.arcanimator.Side;
  */
 public class MaterialSheetFab<FAB extends View & AnimatedFab> {
 
-	// TODO (7/9/15): Remove platform-specific constants (currently needed because of the different
-	// interpolators used)
-	private static final boolean IS_LOLLIPOP = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
-
 	private static final int ANIMATION_SPEED = 1;
 
 	// Animation durations
-	private static final int SHEET_ANIM_DURATION = (IS_LOLLIPOP ? 600 : 300) * ANIMATION_SPEED;
+	private static final int SHEET_ANIM_DURATION = 300 * ANIMATION_SPEED;
 	private static final int SHOW_SHEET_COLOR_ANIM_DURATION = (int) (SHEET_ANIM_DURATION * 0.75);
-	private static final int HIDE_SHEET_COLOR_ANIM_DURATION = IS_LOLLIPOP
-			? (int) (SHEET_ANIM_DURATION * 1.5) : (SHEET_ANIM_DURATION * 2);
+	private static final int HIDE_SHEET_COLOR_ANIM_DURATION = (int) (SHEET_ANIM_DURATION * 0.75);
 	private static final int FAB_ANIM_DURATION = 300 * ANIMATION_SPEED;
 	private static final int SHOW_OVERLAY_ANIM_DURATION = MaterialSheetFab.SHOW_SHEET_ANIM_DELAY
 			+ SHEET_ANIM_DURATION;
 	private static final int HIDE_OVERLAY_ANIM_DURATION = SHEET_ANIM_DURATION;
 
 	// Animation delays
-	private static final int SHOW_SHEET_ANIM_DELAY = (int) (FAB_ANIM_DURATION * 0.5);
-	private static final int MOVE_FAB_ANIM_DELAY = IS_LOLLIPOP ? (int) (SHEET_ANIM_DURATION * 0.3)
-			: (int) (SHEET_ANIM_DURATION * 0.6);
-
-	// Other animation constants
-	private static final float FAB_SCALE_FACTOR = 0.6f;
-	private static final int FAB_ARC_DEGREES = 0;
+	private static final int SHOW_SHEET_ANIM_DELAY = 0;
+	private static final int MOVE_FAB_ANIM_DELAY = 0;
 
 	// Views
 	protected FAB fab;
@@ -264,10 +251,7 @@ public class MaterialSheetFab<FAB extends View & AnimatedFab> {
 		sheetAnimation.alignSheetWithFab(fab);
 
 		// Morph FAB into sheet
-		fabAnimation.morphIntoSheet(sheetAnimation.getSheetRevealCenterX(),
-				sheetAnimation.getSheetRevealCenterY(fab),
-				getFabArcSide(sheetAnimation.getRevealXDirection()), FAB_ARC_DEGREES,
-				FAB_SCALE_FACTOR, FAB_ANIM_DURATION, null);
+		fabAnimation.morphIntoSheet(FAB_ANIM_DURATION, null);
 
 		// Show sheet after a delay
 		new Handler().postDelayed(new Runnable() {
@@ -295,9 +279,7 @@ public class MaterialSheetFab<FAB extends View & AnimatedFab> {
 				sheetAnimation.setSheetVisibility(View.INVISIBLE);
 
 				// Show FAB
-				fabAnimation.morphFromSheet(anchorX, anchorY,
-						getFabArcSide(sheetAnimation.getRevealXDirection()), FAB_ARC_DEGREES,
-						-FAB_SCALE_FACTOR, FAB_ANIM_DURATION, endListener);
+				fabAnimation.morphFromSheet(FAB_ANIM_DURATION, endListener);
 			}
 		}, MOVE_FAB_ANIM_DELAY);
 	}
@@ -312,14 +294,6 @@ public class MaterialSheetFab<FAB extends View & AnimatedFab> {
 				.round(fab.getX() + (fab.getWidth() / 2) + (translationX - fab.getTranslationX()));
 		anchorY = Math
 				.round(fab.getY() + (fab.getHeight() / 2) + (translationY - fab.getTranslationY()));
-	}
-
-	private Side getFabArcSide(RevealXDirection revealXDirection) {
-		if (revealXDirection == RevealXDirection.LEFT) {
-			return Side.LEFT;
-		} else {
-			return Side.RIGHT;
-		}
 	}
 
 	private boolean isAnimating() {

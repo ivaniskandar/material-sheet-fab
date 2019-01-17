@@ -1,4 +1,4 @@
-package com.gordonwong.materialsheetfab.sample.models;
+package com.ivaniskandar.materialsheetfab.sample.models;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -9,7 +9,7 @@ import android.support.annotation.DrawableRes;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
 
-import com.gordonwong.materialsheetfab.sample.R;
+import com.ivaniskandar.materialsheetfab.sample.R;
 
 /**
  * Created by Gordon Wong on 7/18/2015.

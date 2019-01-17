@@ -1,4 +1,4 @@
-package com.gordonwong.materialsheetfab.sample.fragments;
+package com.ivaniskandar.materialsheetfab.sample.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
@@ -10,8 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.gordonwong.materialsheetfab.sample.R;
-import com.gordonwong.materialsheetfab.sample.adapters.NotesAdapter;
+import com.ivaniskandar.materialsheetfab.sample.R;
+import com.ivaniskandar.materialsheetfab.sample.adapters.NotesAdapter;
 
 /**
  * Created by Gordon Wong on 7/18/2015.
