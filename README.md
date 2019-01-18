@@ -1,26 +1,27 @@
 # MaterialSheetFab
-[![Maven Central](https://img.shields.io/maven-central/v/com.gordonwong/material-sheet-fab.svg)](https://oss.sonatype.org/content/repositories/releases/com/gordonwong/material-sheet-fab/)
-[![Codacy Badge](https://api.codacy.com/project/badge/grade/7bc537c29cfc4b74917fb0b2448d7127)](https://www.codacy.com/app/gowong/material-sheet-fab)
-[![GitHub license](https://img.shields.io/badge/license-MIT-brightgreen.svg)](https://raw.githubusercontent.com/gowong/material-sheet-fab/master/LICENSE)
-[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-MaterialSheetFab-green.svg?style=flat)](https://android-arsenal.com/details/1/2178)
-[![Android Weekly](https://img.shields.io/badge/Android%20Weekly-166-green.svg?style=flat)](http://androidweekly.net/issues/issue-166)
+[![](https://jitpack.io/v/ivaniskandar/material-sheet-fab.svg)](https://jitpack.io/#ivaniskandar/material-sheet-fab)
 
+Library that mimics the [floating action button (FAB) menu](https://www.google.com/design/spec/components/buttons-floating-action-button.html#buttons-floating-action-button-transitions) from Google's Material Design documentation. It can be used with any FAB library on Android 4.0+ (API levels >= 14).
 
-Library that implements the floating action button to sheet [transition](https://www.google.com/design/spec/components/buttons-floating-action-button.html#buttons-floating-action-button-transitions) from Google's Material Design documentation. It can be used with any FAB library on Android 4.0+ (API levels >= 14).  
-
-![Transition](art/bgmonitor.gif)
+![Transition](art/lite.gif)
 
 ## Installation
 ### Gradle
-Add the dependency (available from mavenCentral and jcenter) to your `build.gradle`:  
+Add the JitPack repository to your root `build.gradle`:
 ```groovy
-implementation 'com.gordonwong:material-sheet-fab:1.2.1'
+allprojects {
+    repositories {
+        ...
+        maven { url 'https://jitpack.io' }
+    }
+}
 ```
 
-### Proguard
-Modify your proguard configuration (if your app is using Proguard).
-```java
--keep class io.codetail.animation.arcanimator.** { *; }
+Add the dependency to your project `build.gradle`:
+```groovy
+dependencies {
+    implementation 'com.github.ivaniskandar:material-sheet-fab:1.0.0'
+}
 ```
 
 ## Usage
@@ -80,28 +81,25 @@ public class Fab extends FloatingActionButton implements AnimatedFab {
         android:layout_alignParentRight="true" />
 
     <!-- Overlay that dims the screen -->
-    <com.gordonwong.materialsheetfab.DimOverlayFrameLayout
+    <com.ivaniskandar.materialsheetfab.DimOverlayFrameLayout
         android:id="@+id/overlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <!-- Circular reveal container for the sheet -->
-    <io.codetail.widget.RevealLinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="end|bottom"
-        android:orientation="vertical">
+    <!-- Sheet that contains your items -->
+    <android.support.v7.widget.CardView
+        android:id="@+id/fab_sheet"
+        android:layout_width="250dp"
+        android:layout_height="300dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="16dp">
 
-        <!-- Sheet that contains your items -->
-        <android.support.v7.widget.CardView
-            android:id="@+id/fab_sheet"
-            android:layout_width="250dp"
-            android:layout_height="300dp">
-            
-            <!-- TODO: Put your sheet items here -->
-            
-        </android.support.v7.widget.CardView>
-    </io.codetail.widget.RevealLinearLayout>
+        <!-- TODO: Put your sheet items here -->
+
+    </android.support.v7.widget.CardView>
+
 </RelativeLayout>
 ```
 
@@ -164,38 +162,23 @@ materialSheetFab.setEventListener(new MaterialSheetFabEventListener() {
 });
 ```
 
-**Move the FAB around the screen** (this is useful for coordinating with [snackbars](http://www.google.com/design/spec/components/snackbars-toasts.html)):  
+**Move the FAB around the screen** (this is useful for coordinating with [snackbars](https://material.io/design/components/snackbars.html)):
 ```java
 materialSheetFab.showFab(translationX, translationY);
 ```
-
-## Sample app
-[![Get it on Google Play](https://developer.android.com/images/brand/en_generic_rgb_wo_60.png)](https://play.google.com/store/apps/details?id=com.gordonwong.materialsheetfab.sample)
-
-![Sample 1](art/sample1.png) ![Sample 2](art/sample2.png)
-
-Take a look at the [sample code](./sample/) and try the [app](https://play.google.com/store/apps/details?id=com.gordonwong.materialsheetfab.sample).
-
-## Apps using MaterialSheetFab
-Feel free to open a pull request to include your app here.
-
-Icon | App
- --- | ---
-![BG Monitor](http://bg-monitor.com/images/favicon.png)|[BG Monitor - Diabetes Management](http://bg-monitor.com/)
 
 ## Changelog
 See changelog [here](./CHANGELOG.md).
 
 ## Credits
-The following libraries are used:  
-[CircularReveal](https://github.com/ozodrukh/CircularReveal) - Adds circular reveal animation on Android versions < 5.0  
-[ArcAnimator](https://github.com/asyl/ArcAnimator) - Used to animate FAB in an arc
+[MaterialSheetFab](https://github.com/gowong/material-sheet-fab) library by [Gordon Wong](https://github.com/gowong) is used as the base of this project.
 
 ## License
 ```
 The MIT License (MIT)
 
 Copyright (c) 2015 Gordon Wong
+Copyright (c) 2019 Ivan Iskandar
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
