@@ -23,8 +23,8 @@ public class MaterialSheetFab<FAB extends View & AnimatedFab> {
 
 	// Animation durations
 	private static final int SHEET_ANIM_DURATION = 225 * ANIMATION_SPEED;
-	private static final int SHOW_SHEET_COLOR_ANIM_DURATION = (int) (SHEET_ANIM_DURATION * 2.00);
-	private static final int HIDE_SHEET_COLOR_ANIM_DURATION = (int) (SHEET_ANIM_DURATION * 2.00);
+	private static final int SHOW_SHEET_COLOR_ANIM_DURATION = (int) (SHEET_ANIM_DURATION * 1.00);
+	private static final int HIDE_SHEET_COLOR_ANIM_DURATION = (int) (SHEET_ANIM_DURATION * 1.00);
 	private static final int FAB_ANIM_DURATION = 225 * ANIMATION_SPEED;
 	private static final int SHOW_OVERLAY_ANIM_DURATION = MaterialSheetFab.SHOW_SHEET_ANIM_DELAY
 			+ SHEET_ANIM_DURATION;
